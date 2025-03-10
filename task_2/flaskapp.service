@@ -1,0 +1,15 @@
+[Unit]
+Description=Flask Application
+After=network.target
+
+[Service]
+User=app
+
+ExecStart=/opt/flaskapp/env/bin/python3 /opt/flaskapp/app.py
+
+StandardOutput=file:/var/log/flaskapp/flaskapp.log
+StandardError=file:/var/log/flaskapp/flaskapp-error.log
+
+
+[Install]
+WantedBy=multi-user.target
