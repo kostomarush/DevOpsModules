@@ -13,15 +13,30 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "task_1/task_1.md",
-                "mode": "source",
+                "file": "k8s/task_1.md",
+                "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
               "title": "task_1"
             }
+          },
+          {
+            "id": "200fce91313cf8a0",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "k8s/task_2.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "task_2"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -94,7 +109,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "task_1/task_1.md",
+                "file": "k8s/task_2.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +119,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Обратные ссылки для task_1"
+              "title": "Обратные ссылки для task_2"
             }
           },
           {
@@ -113,12 +128,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "task_1/task_1.md",
+                "file": "k8s/task_2.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Исходящие ссылки из task_1"
+              "title": "Исходящие ссылки из task_2"
             }
           },
           {
@@ -142,13 +157,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "task_1/task_1.md",
+                "file": "k8s/task_2.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Структура task_1"
+              "title": "Структура task_2"
             }
           }
         ]
@@ -168,6 +183,9 @@
       "command-palette:Открыть палитру команд": false
     }
   },
-  "active": "b63fa5fb0bdfb311",
-  "lastOpenFiles": []
+  "active": "200fce91313cf8a0",
+  "lastOpenFiles": [
+    "k8s/task_1.md",
+    "k8s/task_2.md"
+  ]
 }
