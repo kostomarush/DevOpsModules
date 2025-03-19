@@ -17,7 +17,7 @@ metadata:
   name: postgres
 spec:
   selector:
-    app: backend
+    app: postgres
   ports:
   - port: 5432
     targetPort: 5432

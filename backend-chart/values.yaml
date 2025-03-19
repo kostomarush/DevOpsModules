@@ -5,10 +5,10 @@ AppLabels: backend
 backend:
   ContainersName: backend
   service:
-    type: NodePort
+    type: ClusterIP
     port: 5050
     targetPort: 5050
-    nodePort: 30000
+    #nodePort: 30000
   Image:
     repository: kostomarush/flaskback:v1.0
   
@@ -31,6 +31,8 @@ postgres:
 env:
   DB_HOST: "postgres"
   DB_NAME: "test_db"
+  DB_USER: "postgres"
+  DB_PORT: "5432"
 
 secrets:
   DB_PASSWORD: "P@ssw0rd"
@@ -40,5 +42,15 @@ resources:
     cpu: 500m
     memory: 128Mi
 
-volume:
+ingress:
+  ingressClassName: nginx
+  rules:
+    host: flaskapp.local
+    paths:
+      path: /tables
+      pathType: Prefix
+      backend:
+        service:
+          name: backend
+          port: 5050
   

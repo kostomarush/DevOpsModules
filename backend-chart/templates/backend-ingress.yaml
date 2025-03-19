@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-backend-ingress
+spec:
+  ingressClassName: {{ .Values.ingress.ingressClassName }}  # Указываем, какой Ingress-контроллер используем
+  rules:
+  - host: {{ .Values.ingress.rules.host }} #Доменное имя, по которому будет доступен backend
+    http:
+      paths:
+      - path: {{ .Values.ingress.rules.paths.path }}
+        pathType: {{ .Values.ingress.rules.paths.pathType }}
+        backend:
+          service:
+            name: {{ .Values.ingress.rules.paths.backend.service.name }} # Имя Service, к которому пойдёт трафи
+            port:
+              number: {{ .Values.ingress.rules.paths.backend.service.port }}             # Порт, на который передаётся трафик
