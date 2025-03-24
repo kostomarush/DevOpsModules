@@ -1,0 +1,9 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  KUBE_CONFIG: "/home/kube/.kube/config"
+  HELM_VERSION: "v3.8.0"
+  KUBERNETES_NAMESPACE: "default"
