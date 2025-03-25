@@ -1,5 +1,3 @@
-image: docker:19.03.12-dind
-
 stages:
   - build
   - push
@@ -10,12 +8,14 @@ variables:
 
 
 build:
+  image: docker:19.03.12-dind
   stage: build
   script:
     # Собираем Docker образ из Dockerfile
     - docker build -t $DOCKER_IMAGE .
 
 push:
+  image: docker:19.03.12-dind
   stage: push
   script:
     # Входим в GitLab Container Registry
