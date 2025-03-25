@@ -1,5 +1,3 @@
-image: docker:dind
-
 stages:
   - build
   - push
@@ -9,13 +7,13 @@ variables:
   CI_REGISTRY: "registry.gitlab.com"
 
 
-build:
+build-job:
   stage: build
   script:
     # Собираем Docker образ из Dockerfile
     - docker build -t $DOCKER_IMAGE .
 
-push:
+push-job:
   stage: push
   script:
     # Входим в GitLab Container Registry
