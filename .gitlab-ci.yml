@@ -48,4 +48,4 @@ deploy:
   script:
     - helm repo add --username $CI_REGISTRY_USER --password $ACCESS_TOKEN flaskapp:$IMAGE_TAG https://gitlab.com/api/v4/projects/$PROJECT_ID/packages/helm/stable
     - helm repo update
-    - helm upgrade --install flaskapp:$IMAGE_TAG --set backend.Image.repository=$DOCKER_IMAGE:$IMAGE_TAG
+    - helm --install backend-chart --set backend.Image.repository=$DOCKER_IMAGE:$IMAGE_TAG
