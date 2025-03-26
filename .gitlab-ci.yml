@@ -33,6 +33,7 @@ build-job:
   script:
     # Собираем Docker образ из Dockerfile
     - docker build -t $DOCKER_IMAGE:$IMAGE_TAG .
+  when: always
 
 push-job:
   stage: push
@@ -42,6 +43,7 @@ push-job:
 
     # Пушим образ в реестр GitLab
     - docker push $DOCKER_IMAGE:$IMAGE_TAG
+  when: always
 
 deploy:
   stage: deploy
@@ -50,3 +52,4 @@ deploy:
     - helm repo update
     - helm pull flaskapp/backend-chart --version 0.1.0
     - helm upgrade --install flaskapp backend-chart-0.1.0.tgz --set backend.Image.repository=$DOCKER_IMAGE:$IMAGE_TAG
+  when: manual
