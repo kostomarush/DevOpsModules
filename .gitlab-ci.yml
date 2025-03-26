@@ -51,5 +51,5 @@ deploy:
     - helm repo add --username $CI_REGISTRY_USER --password $ACCESS_TOKEN flaskapp https://gitlab.com/api/v4/projects/$PROJECT_ID/packages/helm/stable
     - helm repo update
     - helm pull flaskapp/backend-chart --version 0.1.1
-    - helm upgrade --install flaskapp backend-chart-0.1.1.tgz --set backend.Image.repository=$DOCKER_IMAGE:$IMAGE_TAG
+    - helm upgrade --install flaskapp backend-chart-0.1.2.tgz --set backend.Image.repository=$DOCKER_IMAGE:$IMAGE_TAG
   when: manual
