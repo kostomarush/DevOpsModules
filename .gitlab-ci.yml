@@ -1,11 +1,24 @@
 stages:
   - build
   - push
+  - deploy
 
-variables:
-  
+variables:  
   CI_REGISTRY: "registry.gitlab.com"
   IMAGE_TAG: $CI_COMMIT_SHORT_SHA
+
+
+before_script:
+  # Устанавливаем Helm и Kubernetes CLI (kubectl)
+  - echo $HELM_ACCESS_TOKEN
+  - export HELM_VERSION=v3.8.0
+  - curl https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -o helm.tar.gz
+  - tar -zxvf helm.tar.gz
+  - mv linux-amd64/helm /usr/local/bin/helm
+  - helm version
+  - kubectl version
+  - mkdir -p ~/.kube
+  - echo "$KUBERNETES_CONFIG" | base64 -d > ~/.kube/config
 
 build-job:
   stage: build
@@ -22,3 +35,10 @@ push-job:
     # Пушим образ в реестр GitLab
     - docker push $DOCKER_IMAGE:$IMAGE_TAG
 
+#deploy:
+#  stage: deploy
+#  image: alpine/helm:3.8.0
+#  script:
+#    - helm repo add --username $CI_REGISTRY_USER --password <access_token> project-1 https://gitlab.example.com/api/v4/projects/<project_id>/packages/helm/<channel>
+#    - helm repo update
+#    - helm upgrade --install $HELM_RELEASE_NAME my-repo/my-backend --set image.tag=$IMAGE_TAG
