@@ -10,6 +10,7 @@ variables:
 
 before_script:
   # Устанавливаем Helm и Kubernetes CLI (kubectl)
+  - apk add --no-cache curl
   - echo $HELM_ACCESS_TOKEN
   - export HELM_VERSION=v3.8.0
   - curl https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -o helm.tar.gz
