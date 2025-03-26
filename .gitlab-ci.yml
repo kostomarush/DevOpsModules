@@ -6,20 +6,27 @@ stages:
 variables:  
   CI_REGISTRY: "registry.gitlab.com"
   IMAGE_TAG: $CI_COMMIT_SHORT_SHA
+  
 
 
 before_script:
-  # Устанавливаем Helm и Kubernetes CLI (kubectl)
-  - apk add --no-cache curl
-  - echo $HELM_ACCESS_TOKEN
+  # Устанавливаем необходимые пакеты в Alpine
+  - apk add --no-cache curl tar gzip
+  # Устанавливаем Helm
   - export HELM_VERSION=v3.8.0
-  - curl https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -o helm.tar.gz
+  - curl -fsSL https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -o helm.tar.gz
   - tar -zxvf helm.tar.gz
   - mv linux-amd64/helm /usr/local/bin/helm
   - helm version
-  - kubectl version
+  # Устанавливаем kubectl
+  - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+  - chmod +x kubectl
+  - mv kubectl /usr/local/bin/
+  - kubectl version --client
+  # Настраиваем kubeconfig для доступа к Kubernetes
   - mkdir -p ~/.kube
-  - echo "$KUBERNETES_CONFIG" | base64 -d > ~/.kube/config
+  - echo "$KUBERNETES_CONFIG" | base64 -d > $KUBE_CONFIG
+
 
 build-job:
   stage: build
@@ -36,10 +43,10 @@ push-job:
     # Пушим образ в реестр GitLab
     - docker push $DOCKER_IMAGE:$IMAGE_TAG
 
-#deploy:
-#  stage: deploy
-#  image: alpine/helm:3.8.0
-#  script:
-#    - helm repo add --username $CI_REGISTRY_USER --password <access_token> project-1 https://gitlab.example.com/api/v4/projects/<project_id>/packages/helm/<channel>
-#    - helm repo update
-#    - helm upgrade --install $HELM_RELEASE_NAME my-repo/my-backend --set image.tag=$IMAGE_TAG
+deploy:
+  stage: deploy
+  image: alpine/helm:3.8.0
+  script:
+    - helm repo add --username $CI_REGISTRY_USER --password $ACCESS_TOKEN flaskapp-bakend:$IMAGE_TAG https://gitlab.com/api/v4/projects/$PROJECT_ID/packages/helm/stable
+    - helm repo update
+    - helm upgrade --install flaskapp-bakend:$IMAGE_TAG /flaskapp-bakend:$IMAGE_TAG --set backend.Image.repository=$IMAGE_TAG
