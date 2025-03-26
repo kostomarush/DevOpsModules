@@ -21,6 +21,10 @@ def get_all_tables():
     cur.execute("SELECT * FROM data;")
     tables = cur.fetchall()
 
+@app.route('/test')
+def get_test():
+    return "<h1>Test Page - All Tables</h1>"
+
     
     cur.close()
     conn.close()
