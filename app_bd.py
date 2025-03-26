@@ -20,15 +20,14 @@ def get_all_tables():
     cur = conn.cursor()
     cur.execute("SELECT * FROM data;")
     tables = cur.fetchall()
-
-@app.route('/test')
-def get_test():
-    return "<h1>Test Page - All Tables</h1>"
-
     
     cur.close()
     conn.close()
     return jsonify([{"id": t[0], "data": t[1]} for t in tables])
+
+@app.route('/test')
+def get_test():
+    return "<h1>Test Page - All Tables</h1>"
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5050, debug=True)
