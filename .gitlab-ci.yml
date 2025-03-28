@@ -60,6 +60,8 @@ deploy_gitlab:
 deploy_argocd:
   stage: deploy
   script:
+    - git config --global user.email "runner@example.com"
+    - git config --global user.name "runner"
     - git clone https://gitlab-ci-token:$ACCESS_TOKEN@gitlab.com/kostomarush/DevOpsModules.git
     - cd DevOpsModules/ && git checkout 'module_2' && cd backend-chart
     - sed -i "s|tag:\ .*|tag:\ $IMAGE_TAG|g" values.yaml
