@@ -47,7 +47,7 @@ push-job:
   when: always
 
 deploy_gitlab:
-  stage: deploy_gitlab
+  stage: deploy
   script:
     - helm repo add --username $CI_REGISTRY_USER --password $ACCESS_TOKEN flaskapp https://gitlab.com/api/v4/projects/$PROJECT_ID/packages/helm/stable
     - helm repo update
@@ -56,7 +56,7 @@ deploy_gitlab:
   when: manual
 
 deploy_argocd:
-  stage: deploy_argocd
+  stage: deploy
   script:
     - git clone https://$ACCESS_TOKEN@gitlab.com/kostomarush/DevOpsModules.git
     - cd DevOpsModules/ && git checkout 'module_2' && cd backend-chart
@@ -65,5 +65,5 @@ deploy_argocd:
     - git config --global user.email "runner@example.com"
     - git config --global user.name "runner"
     - git commit -am "new backend image"
-    - git push https://$ACCESS_TOKEN@gitlab.com/kostomarush/DevOpsModules.git origin module_2
+    - git push https://$ACCESS_TOKEN@gitlab.com/kostomarush/DevOpsModules.git module_2
   when: manual
