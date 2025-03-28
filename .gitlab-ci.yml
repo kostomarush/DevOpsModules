@@ -10,26 +10,26 @@ variables:
   
 
 
-before_script:
-  # Устанавливаем необходимые пакеты в Alpine
-  - apk add --no-cache curl tar gzip
-  # Устанавливаем Helm
-  - export HELM_VERSION=v3.8.0
-  - curl -fsSL https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -o helm.tar.gz
-  - tar -zxvf helm.tar.gz
-  - mv linux-amd64/helm /usr/local/bin/helm
-  - helm version
-  # Устанавливаем kubectl
-  - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-  - chmod +x kubectl
-  - mv kubectl /usr/local/bin/
-  - kubectl version --client
-  # Настраиваем kubeconfig для доступа к Kubernetes
-  - mkdir -p ~/.kube
-  - echo "$KUBERNETES_CONFIG" | base64 -d > ~/.kube/config
-
-  - git config --global user.email "runner@example.com"
-  - git config --global user.name "runner"
+#before_script:
+#  # Устанавливаем необходимые пакеты в Alpine
+#  - apk add --no-cache curl tar gzip
+#  # Устанавливаем Helm
+#  - export HELM_VERSION=v3.8.0
+#  - curl -fsSL https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -o helm.tar.gz
+#  - tar -zxvf helm.tar.gz
+#  - mv linux-amd64/helm /usr/local/bin/helm
+#  - helm version
+#  # Устанавливаем kubectl
+#  - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+#  - chmod +x kubectl
+#  - mv kubectl /usr/local/bin/
+#  - kubectl version --client
+#  # Настраиваем kubeconfig для доступа к Kubernetes
+#  - mkdir -p ~/.kube
+#  - echo "$KUBERNETES_CONFIG" | base64 -d > ~/.kube/config
+#
+#  - git config --global user.email "runner@example.com"
+#  - git config --global user.name "runner"
 
 build-job:
   stage: build
