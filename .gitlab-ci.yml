@@ -53,3 +53,14 @@ deploy:
     - helm pull flaskapp/backend-chart --version 0.2.0
     - helm upgrade --install flaskapp backend-chart-0.2.0.tgz --set backend.Image.repository=$DOCKER_IMAGE:$IMAGE_TAG
   when: manual
+
+  deploy:
+    stage: deploy
+    script:
+      - git clone https://oauth2:$ACCESS_TOKEN@https://gitlab.com/kostomarush/DevOpsModules.git
+      - cd backend-chart
+      - sed -i "s|tag: .*|tag: $IMAGE_TAG|g" values.yaml
+      - sed -i "s|repository: .*|repository: registry.gitlab.com/kostomarush/devopsmodules:$IMAGE_TAG|g" values.yaml
+      - git commit -am "new backend image"
+      - git push https://oauth2:$ACCESS_TOKEN@https://gitlab.com/kostomarush/DevOpsModules.git
+    when: manual
