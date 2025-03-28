@@ -62,6 +62,8 @@ deploy_argocd:
     - cd DevOpsModules/ && git checkout 'module_2' && cd backend-chart
     - sed -i "s|tag:.*|tag:$IMAGE_TAG|g" values.yaml
     - sed -i "s|repository:.*|repository:registry.gitlab.com/kostomarush/devopsmodules:$IMAGE_TAG|g" values.yaml
+    - git config --global user.email "runner@example.com"
+    - git config --global user.name "runner"
     - git commit -am "new backend image"
     - git push https://$ACCESS_TOKEN@gitlab.com/kostomarush/DevOpsModules.git origin module_2
   when: manual
