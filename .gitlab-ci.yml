@@ -59,7 +59,7 @@ deploy_argocd:
   stage: deploy_argocd
   script:
     - git clone https://$ACCESS_TOKEN@gitlab.com/kostomarush/DevOpsModules.git
-    - git checkout module_2
+    - git checkout 'module_2'
     - cd backend-chart
     - sed -i "s|tag:.*|tag:$IMAGE_TAG|g" values.yaml
     - sed -i "s|repository:.*|repository:registry.gitlab.com/kostomarush/devopsmodules:$IMAGE_TAG|g" values.yaml
