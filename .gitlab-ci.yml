@@ -6,6 +6,7 @@ stages:
 variables:  
   CI_REGISTRY: "registry.gitlab.com"
   IMAGE_TAG: $CI_COMMIT_SHORT_SHA
+  CI_COMMIT_REF_NAME: origin
   
 
 
@@ -26,6 +27,10 @@ before_script:
   # Настраиваем kubeconfig для доступа к Kubernetes
   - mkdir -p ~/.kube
   - echo "$KUBERNETES_CONFIG" | base64 -d > ~/.kube/config
+
+  - git config --global user.email "runner@example.com"
+  - git config --global user.name "runner"
+  - git remote add origin https://gitlab-ci-token:$ACCESS_TOKEN@gitlab.com/kostomarush/DevOpsModules.git
 
 
 build-job:
@@ -57,12 +62,10 @@ deploy_gitlab:
 deploy_argocd:
   stage: deploy
   script:
-    - git clone https://$ACCESS_TOKEN@gitlab.com/kostomarush/DevOpsModules.git
+    - git clone origin
     - cd DevOpsModules/ && git checkout 'module_2' && cd backend-chart
     - sed -i "s|tag:.*|tag:$IMAGE_TAG|g" values.yaml
     - sed -i "s|repository:.*|repository:registry.gitlab.com/kostomarush/devopsmodules:$IMAGE_TAG|g" values.yaml
-    - git config --global user.email "runner@example.com"
-    - git config --global user.name "runner"
-    - git commit -am "new backend image"
-    - git push https://$ACCESS_TOKEN@gitlab.com/kostomarush/DevOpsModules.git module_2
+    - git commit -am "Update values.yaml tag=$IMAGE_TAG"
+    - git push origin module_2
   when: manual
