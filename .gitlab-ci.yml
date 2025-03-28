@@ -45,7 +45,7 @@ push-job:
     - docker push $DOCKER_IMAGE:$IMAGE_TAG
   when: always
 
-deploy:
+deploy_gitlab:
   stage: deploy
   script:
     - helm repo add --username $CI_REGISTRY_USER --password $ACCESS_TOKEN flaskapp https://gitlab.com/api/v4/projects/$PROJECT_ID/packages/helm/stable
@@ -54,13 +54,13 @@ deploy:
     - helm upgrade --install flaskapp backend-chart-0.2.0.tgz --set backend.Image.repository=$DOCKER_IMAGE:$IMAGE_TAG
   when: manual
 
-  deploy:
-    stage: deploy
-    script:
-      - git clone https://oauth2:$ACCESS_TOKEN@https://gitlab.com/kostomarush/DevOpsModules.git
-      - cd backend-chart
-      - sed -i "s|tag: .*|tag: $IMAGE_TAG|g" values.yaml
-      - sed -i "s|repository: .*|repository: registry.gitlab.com/kostomarush/devopsmodules:$IMAGE_TAG|g" values.yaml
-      - git commit -am "new backend image"
-      - git push https://oauth2:$ACCESS_TOKEN@https://gitlab.com/kostomarush/DevOpsModules.git
-    when: manual
+deploy_argocd:
+  stage: deploy
+  script:
+    - git clone https://oauth2:$ACCESS_TOKEN@https://gitlab.com/kostomarush/DevOpsModules.git
+    - cd backend-chart
+    - sed -i "s|tag: .*|tag: '$IMAGE_TAG'|g" values.yaml
+    - sed -i "s|repository: .*|repository: registry.gitlab.com/kostomarush/devopsmodules:'$IMAGE_TAG'|g" values.yaml
+    - git commit -am "new backend image"
+    - git push https://oauth2:$ACCESS_TOKEN@https://gitlab.com/kostomarush/DevOpsModules.git
+  when: manual
