@@ -27,7 +27,7 @@ def get_all_tables():
 
 @app.route('/test')
 def get_test():
-    return "<h1>Kuber v.3</h1>"
+    return "<h1>Kuber v.4</h1>"
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5050, debug=True)

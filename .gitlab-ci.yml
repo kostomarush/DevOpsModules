@@ -63,7 +63,7 @@ deploy_argocd:
     - git config --global user.name "runner"
     - git clone https://gitlab-ci-token:$ACCESS_TOKEN@gitlab.com/kostomarush/DevOpsModules.git
     - cd DevOpsModules/ && git checkout 'module_2' && cd backend-chart
-    - sed -i "s|tag:\s .*|tag:\s$IMAGE_TAG|g" values.yaml
+    - sed -i "s|tag:\s .*|tag:\s $IMAGE_TAG|g" values.yaml
     - sed -i "s|repository:\s .*|repository:registry.gitlab.com/kostomarush/devopsmodules:$IMAGE_TAG|g" values.yaml
     - git commit -am "Update values.yaml tag=$IMAGE_TAG"
     - git push https://gitlab-ci-token:$ACCESS_TOKEN@gitlab.com/kostomarush/DevOpsModules.git module_2
