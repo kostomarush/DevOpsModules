@@ -45,6 +45,7 @@ push-job:
 
     # Пушим образ в реестр GitLab
     - docker push $DOCKER_IMAGE:$IMAGE_TAG
+    - echo $IMAGE_TAG
   when: always
 
 deploy_gitlab:
