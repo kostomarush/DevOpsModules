@@ -1,7 +1,8 @@
 stages:
   - build
   - push
-  - deploy
+  - deploy_gitlab
+  - deploy_argocd
 
 variables:  
   CI_REGISTRY: "registry.gitlab.com"
@@ -46,7 +47,7 @@ push-job:
   when: always
 
 deploy_gitlab:
-  stage: deploy
+  stage: deploy_gitlab
   script:
     - helm repo add --username $CI_REGISTRY_USER --password $ACCESS_TOKEN flaskapp https://gitlab.com/api/v4/projects/$PROJECT_ID/packages/helm/stable
     - helm repo update
@@ -55,12 +56,13 @@ deploy_gitlab:
   when: manual
 
 deploy_argocd:
-  stage: deploy
+  stage: deploy_argocd
   script:
-    - git clone https://oauth2:$ACCESS_TOKEN@https://gitlab.com/kostomarush/DevOpsModules.git
+    - git clone https://$ACCESS_TOKEN@gitlab.com/kostomarush/DevOpsModules.git
+    - git checkout module_2
     - cd backend-chart
     - sed -i "s|tag:.*|tag:$IMAGE_TAG|g" values.yaml
     - sed -i "s|repository:.*|repository:registry.gitlab.com/kostomarush/devopsmodules:$IMAGE_TAG|g" values.yaml
     - git commit -am "new backend image"
-    - git push https://oauth2:$ACCESS_TOKEN@https://gitlab.com/kostomarush/DevOpsModules.git
+    - git push https://$ACCESS_TOKEN@gitlab.com/kostomarush/DevOpsModules.git
   when: manual
