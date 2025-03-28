@@ -64,5 +64,5 @@ deploy_argocd:
     - sed -i "s|tag:.*|tag:$IMAGE_TAG|g" values.yaml
     - sed -i "s|repository:.*|repository:registry.gitlab.com/kostomarush/devopsmodules:$IMAGE_TAG|g" values.yaml
     - git commit -am "new backend image"
-    - git push https://$ACCESS_TOKEN@gitlab.com/kostomarush/DevOpsModules.git
+    - git push https://$ACCESS_TOKEN@gitlab.com/kostomarush/DevOpsModules.git origin module_2
   when: manual
