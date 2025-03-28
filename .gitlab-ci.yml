@@ -30,7 +30,7 @@ before_script:
 
   - git config --global user.email "runner@example.com"
   - git config --global user.name "runner"
-  - git remote add origin https://gitlab-ci-token:$ACCESS_TOKEN@gitlab.com/kostomarush/DevOpsModules.git
+  - git remote add gitlab https://gitlab-ci-token:$ACCESS_TOKEN@gitlab.com/kostomarush/DevOpsModules.git
 
 
 build-job:
@@ -62,10 +62,10 @@ deploy_gitlab:
 deploy_argocd:
   stage: deploy
   script:
-    - git clone origin
+    - git clone gitlab
     - cd DevOpsModules/ && git checkout 'module_2' && cd backend-chart
     - sed -i "s|tag:.*|tag:$IMAGE_TAG|g" values.yaml
     - sed -i "s|repository:.*|repository:registry.gitlab.com/kostomarush/devopsmodules:$IMAGE_TAG|g" values.yaml
     - git commit -am "Update values.yaml tag=$IMAGE_TAG"
-    - git push origin module_2
+    - git push gitlab module_2
   when: manual
