@@ -6,29 +6,6 @@ stages:
 variables:  
   CI_REGISTRY: "registry.gitlab.com"
   IMAGE_TAG: $CI_COMMIT_SHORT_SHA
-  CI_COMMIT_REF_NAME: o\s
-
-
-#before_script:
-#  # Устанавливаем необходимые пакеты в Alpine
-#  - apk add --no-cache curl tar gzip
-#  # Устанавливаем Helm
-#  - export HELM_VERSION=v3.8.0
-#  - curl -fsSL https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -o helm.tar.gz
-#  - tar -zxvf helm.tar.gz
-#  - mv linux-amd64/helm /usr/local/bin/helm
-#  - helm version
-#  # Устанавливаем kubectl
-#  - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-#  - chmod +x kubectl
-#  - mv kubectl /usr/local/bin/
-#  - kubectl version --client
-#  # Настраиваем kubeconfig для доступа к Kubernetes
-#  - mkdir -p ~/.kube
-#  - echo "$KUBERNETES_CONFIG" | base64 -d > ~/.kube/config
-#
-#  - git config --global user.email "runner@example.com"
-#  - git config --global user.name "runner"
 
 build-job:
   stage: build
@@ -51,6 +28,21 @@ push-job:
 deploy_gitlab:
   stage: deploy
   script:
+    - apk add --no-cache curl tar gzip
+    # Устанавливаем Helm
+    - export HELM_VERSION=v3.8.0
+    - curl -fsSL https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -o helm.tar.gz
+    - tar -zxvf helm.tar.gz
+    - mv linux-amd64/helm /usr/local/bin/helm
+    - helm version
+    # Устанавливаем kubectl
+    - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    - chmod +x kubectl
+    - mv kubectl /usr/local/bin/
+    - kubectl version --client
+    # Настраиваем kubeconfig для доступа к Kubernetes
+    - mkdir -p ~/.kube
+    - echo "$KUBERNETES_CONFIG" | base64 -d > ~/.kube/config
     - helm repo add --username $CI_REGISTRY_USER --password $ACCESS_TOKEN flaskapp https://gitlab.com/api/v4/projects/$PROJECT_ID/packages/helm/stable
     - helm repo update
     - helm pull flaskapp/backend-chart --version 0.2.0
